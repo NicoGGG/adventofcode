@@ -75,10 +75,12 @@ def find_combination(line: str) -> int:
         last = digit
         # For the edge cases like "sevenine", don't skip the last letter of the digit if it is alphabetical
         # Thanks u/Zefick for the tip
-        if start != end:
-            line = line[end:]
-        else:
-            line = line[end + 1 :]
+        # My first solution was to move forward the index to AFTER the last character of the digit
+        # but because of this edge case, I had to add a condition to
+        # check if the input was alphabetical, and if it was, then I would move forward the index to the last letter of the digit
+        # while when it was numerical, just move the index by 1 (otherwise it would loop infinitely on numeric digit where start == end).
+        # This was an unnecessary optimization, because I could just move the index by 1 every time and not worry about the edge case
+        line = line[start + 1 :]
     return int(first + last)
 
 

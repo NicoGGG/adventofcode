@@ -1,7 +1,5 @@
 # Advent of Code
 
-My submissions for [Advent of Code](https://adventofcode.com/).
+My way of solving the puzzles for [Advent of Code](https://adventofcode.com/).
 
-## 2023
-
-- [Day 1: Trebuchet?!](2023/1)
+- [2023](2023)
