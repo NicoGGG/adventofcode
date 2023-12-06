@@ -1,4 +1,4 @@
-# Cube conundrum
+# [Cube conundrum](https://adventofcode.com/2023/day/2)
 
 Lost a couple hours trying to solve it with an Object Oriented approach.
 

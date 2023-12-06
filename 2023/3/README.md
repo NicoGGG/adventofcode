@@ -1,4 +1,4 @@
-# Gear Ratios
+# [Gear Ratios](https://adventofcode.com/2023/day/3)
 
 I solved part 1 by looking for number and scanning if they are adjacent to gear.
 
