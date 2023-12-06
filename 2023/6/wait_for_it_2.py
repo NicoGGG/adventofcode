@@ -7,13 +7,23 @@ def find_winning_combination(time: int, distance: int):
     return r
 
 
-def resolve_exercise(filepath):
+def find_winning_combination_partial(time: int, distance: int):
+    start = 0
+    end = 0
+    for i in range(time):
+        if start == 0 and i * (time - i) > distance:
+            start = i
+        if end == 0 and (time - i) * i > distance:
+            end = time - i
+    return end - start + 1
+
+
+def resolve_exercise(filepath, optim: bool = True):
     input = open(filepath, "r").read().splitlines()
     time = int("".join(input[0].split(":")[1].split()))
     distance = int("".join(input[1].split(":")[1].split()))
-    print(time)
-    print(distance)
-    r = find_winning_combination(time, distance)
-    # for i, time in enumerate(times):
-    #     r *= find_winning_combination(time, distances[i])
+    if optim:
+        r = find_winning_combination_partial(time, distance)
+    else:
+        r = find_winning_combination(time, distance)
     return r
