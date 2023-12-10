@@ -12,3 +12,11 @@
   Skipped
 - [Day 6: Wait for it](https://adventofcode.com/2023/day/6) =>
   [My solution](6)
+- [Day 7: Camel Cards](https://adventofcode.com/2023/day/7) =>
+  [My solution](7)
+- [Day 8: Haunted Wasteland](https://adventofcode.com/2023/day/8) =>
+  [My solution](8)
+- [Day 9: Mirage Maintenance](https://adventofcode.com/2023/day/9) =>
+  [My solution](9)
+- [Day 10: Pipe Maze](https://adventofcode.com/2023/day/10) =>
+  [My solution](10)

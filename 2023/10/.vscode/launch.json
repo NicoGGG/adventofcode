@@ -1,0 +1,46 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Main",
+            "type": "python",
+            "request": "launch",
+            "program": "main.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Python: Unittest 2_1",
+            "type": "python",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "test_pipe_1.TestPipe.test_find_first_next_pipe_2_1",
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Unittest example 1",
+            "type": "python",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "test_pipe_2.TestPipe.test_example_1",
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python: Unittest test_is_inside_loop_1_3",
+            "type": "python",
+            "request": "launch",
+            "module": "unittest",
+            "args": [
+                "test_pipe_2.TestPipe.test_is_inside_loop_1_3",
+            ],
+            "console": "integratedTerminal"
+        }
+        
+    ]
+}
