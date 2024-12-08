@@ -16,47 +16,42 @@ defmodule Day06 do
     end)
   end
 
-  def move_guard_north(_grid, {x, 0}, _size, traveled_locations),
-    do: MapSet.put(traveled_locations, {x, 0})
+  defp rotate90({a, b}), do: {-b, a}
 
-  def move_guard_north(grid, {x, y}, size, traveled_locations) do
-    if blocked?(grid, {x, y - 1}) do
-      move_guard_east(grid, {x, y}, size, traveled_locations)
-    else
-      move_guard_north(grid, {x, y - 1}, size, MapSet.put(traveled_locations, {x, y}))
+  def move_next_step(grid, {current_x, current_y}, size, traveled_locations, {dir_x, dir_y}) do
+    next_coord = {current_x + dir_x, current_y + dir_y}
+
+    cond do
+      blocked?(grid, next_coord) ->
+        {new_dir_x, new_dir_y} = rotate90({dir_x, dir_y})
+
+        move_next_step(
+          grid,
+          {current_x, current_y},
+          size,
+          traveled_locations,
+          {new_dir_x, new_dir_y}
+        )
+
+      out_of_bound?(next_coord, size) ->
+        MapSet.put(traveled_locations, {current_x, current_y})
+
+      true ->
+        move_next_step(
+          grid,
+          next_coord,
+          size,
+          MapSet.put(traveled_locations, {current_x, current_y}),
+          {dir_x, dir_y}
+        )
     end
   end
 
-  defp move_guard_east(_grid, {x, y}, size, traveled_locations) when x >= size,
-    do: MapSet.put(traveled_locations, {x, y})
-
-  defp move_guard_east(grid, {x, y}, size, traveled_locations) do
-    if blocked?(grid, {x + 1, y}) do
-      move_guard_south(grid, {x, y}, size, traveled_locations)
+  defp out_of_bound?({x, y}, size) do
+    if x < 0 || y < 0 || x >= size || y >= size do
+      true
     else
-      move_guard_east(grid, {x + 1, y}, size, MapSet.put(traveled_locations, {x, y}))
-    end
-  end
-
-  defp move_guard_south(_grid, {x, y}, size, traveled_locations) when y >= size,
-    do: MapSet.put(traveled_locations, {x, y})
-
-  defp move_guard_south(grid, {x, y}, size, traveled_locations) do
-    if blocked?(grid, {x, y + 1}) do
-      move_guard_west(grid, {x, y}, size, traveled_locations)
-    else
-      move_guard_south(grid, {x, y + 1}, size, MapSet.put(traveled_locations, {x, y}))
-    end
-  end
-
-  defp move_guard_west(_grid, {0, y}, _size, traveled_locations),
-    do: MapSet.put(traveled_locations, {0, y})
-
-  defp move_guard_west(grid, {x, y}, size, traveled_locations) do
-    if blocked?(grid, {x - 1, y}) do
-      move_guard_north(grid, {x, y}, size, traveled_locations)
-    else
-      move_guard_west(grid, {x - 1, y}, size, MapSet.put(traveled_locations, {x, y}))
+      false
     end
   end
 
@@ -77,9 +72,11 @@ guard_location = Day06.find_guard(input)
 
 size = length(input)
 
+guard_path =
+  Day06.move_next_step(input, guard_location, size, MapSet.new(), {0, -1})
+
 result =
-  Day06.move_guard_north(input, guard_location, size, MapSet.new())
-  |> Enum.count()
+  Enum.count(guard_path)
 
 IO.inspect(result, label: "part1")
 
@@ -87,3 +84,6 @@ IO.inspect(result, label: "part1")
 # The key could be the coord as a tuple (if possible in elixir ?) and the value the character.
 # This would avoid doing Enum.at(Enum.at(grid, y), x), which is not very pretty
 # There is a good chance that this is actually almost required to solve part 2 so we'll see
+
+# NOTE: Part 2 - For each position in the returned set, I can build a new grid with this position replaced by a # (except the first one)
+# Then make the guard patrol the new grid and checking if he is in a loop (two cursor method ?)
