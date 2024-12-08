@@ -16,49 +16,35 @@ defmodule Day06 do
     end)
   end
 
-  defp rotate90({a, b}), do: {-b, a}
+  defp rotate90({x, y}), do: {-y, x}
 
-  def move_next_step(grid, {current_x, current_y}, size, traveled_locations, {dir_x, dir_y}) do
+  # def move_next_step(nil, {current_x, current_y}, size, traveled_locations, {dir_x, dir_y}),
+  #   do: MapSet.put(traveled_locations, {current_x, current_y})
+
+  def move_next_step(grid, {current_x, current_y}, traveled_locations, {dir_x, dir_y}) do
     next_coord = {current_x + dir_x, current_y + dir_y}
 
     cond do
-      blocked?(grid, next_coord) ->
-        {new_dir_x, new_dir_y} = rotate90({dir_x, dir_y})
+      Map.get(grid, next_coord) === ?# ->
+        new_dir = rotate90({dir_x, dir_y})
 
         move_next_step(
           grid,
           {current_x, current_y},
-          size,
           traveled_locations,
-          {new_dir_x, new_dir_y}
+          new_dir
         )
 
-      out_of_bound?(next_coord, size) ->
-        MapSet.put(traveled_locations, {current_x, current_y})
+      Map.get(grid, {current_x, current_y}) === nil ->
+        traveled_locations
 
       true ->
         move_next_step(
           grid,
           next_coord,
-          size,
           MapSet.put(traveled_locations, {current_x, current_y}),
           {dir_x, dir_y}
         )
-    end
-  end
-
-  defp out_of_bound?({x, y}, size) do
-    if x < 0 || y < 0 || x >= size || y >= size do
-      true
-    else
-      false
-    end
-  end
-
-  defp blocked?(grid, {x, y}) do
-    case Enum.at(grid, y) do
-      nil -> false
-      row -> Enum.at(row, x) === ?#
     end
   end
 end
@@ -67,13 +53,16 @@ input =
   File.read!("file.txt")
   |> String.split("\n", trim: true)
   |> Enum.map(&String.to_charlist/1)
+  |> Enum.with_index()
+  |> Enum.flat_map(fn {line, row} ->
+    Enum.with_index(line) |> Enum.flat_map(fn {char, col} -> [{{col, row}, char}] end)
+  end)
+  |> Map.new()
 
-guard_location = Day06.find_guard(input)
-
-size = length(input)
+{guard_location, _} = Enum.find(input, fn {_, char} -> char === ?^ end)
 
 guard_path =
-  Day06.move_next_step(input, guard_location, size, MapSet.new(), {0, -1})
+  Day06.move_next_step(input, guard_location, MapSet.new(), {0, -1})
 
 result =
   Enum.count(guard_path)
