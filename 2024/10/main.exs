@@ -35,11 +35,21 @@ grid =
 
 all_zeros = Map.filter(grid, fn {_key, val} -> val == 48 end)
 
+## Part 1
 result =
   Enum.map(all_zeros, fn {key, val} -> Day10.find_nine(grid, key, val) end)
   |> Enum.map(&List.flatten/1)
   |> Enum.map(&MapSet.new/1)
   |> Enum.map(&MapSet.size/1)
+  |> Enum.sum()
+
+IO.inspect(result)
+
+## Part 2
+result =
+  Enum.map(all_zeros, fn {key, val} -> Day10.find_nine(grid, key, val) end)
+  |> Enum.map(&List.flatten/1)
+  |> Enum.map(&Enum.count/1)
   |> Enum.sum()
 
 IO.inspect(result)
